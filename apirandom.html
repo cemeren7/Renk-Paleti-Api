@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Color Api</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        gap: 14px;
+        align-items: center;
+        min-height: 90vh;
+      }
+
+      .boxs {
+        text-align: center;
+        padding-top: 5px;
+        width: 150px;
+        height: 90px;
+        border-radius: 5px;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        transition: all 0.4s ease;
+      }
+
+      .boxs:hover {
+        transform: translateX(20px);
+        cursor: pointer;
+      }
+
+      .container button {
+        border: none;
+        margin-top: 12px;
+        padding: 10px;
+        border-radius: 5px;
+        width: 120px;
+        background-color: #000000;
+        color: white;
+        transition: all 0.4s ease;
+      }
+
+      .container button:hover {
+        cursor: pointer;
+        background-color: white;
+        color: #000000;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      }
+
+      .container button i {
+        font-size: 21px;
+      }
+
+      @media (max-width: 360px) {
+        .container {
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+      }
+
+      @media (max-width: 384px) {
+        .container {
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .container {
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+      }
+
+      @media (max-width: 800px) {
+        .container {
+          margin-bottom: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="boxs" title="Renk Kodunu Kopyalamak İçin Tıklayın"></div>
+      <div class="boxs" title="Renk Kodunu Kopyalamak İçin Tıklayın"></div>
+      <div class="boxs" title="Renk Kodunu Kopyalamak İçin Tıklayın"></div>
+      <div class="boxs" title="Renk Kodunu Kopyalamak İçin Tıklayın"></div>
+      <div class="boxs" title="Renk Kodunu Kopyalamak İçin Tıklayın"></div>
+      <button type="button" id="btn" title="Rastgele renk paleti oluştur.">
+        <i class="fa-solid fa-palette"></i>
+      </button>
+    </div>
+    <script>
+      const btnrandom = document.querySelector("#btn");
+      const boxsrandom = document.querySelectorAll(".boxs");
+      const key = "randomcolor";
+      Events();
+
+      function Events() {
+        btnrandom.addEventListener("click", () => {
+          boxsrandom.forEach(function (div) {
+            fetch("https://x-colors.yurace.pro/api/random")
+              .then((random) => random.json())
+              .then((data) => {
+                let arraymail = JSON.parse(localStorage.getItem(key) ?? "[]");
+                div.style.backgroundColor = data.hex;
+                div.style.color = "white";
+                div.style.fontSize = "15px";
+                div.style.fontFamily = "Roboto, Arial, sans-serif";
+                div.style.fontWeight = "bold";
+                div.textContent = data.hex;
+                let randomarray = {
+                  Hexolor: data.hex,
+                };
+                arraymail.push(randomarray);
+                localStorage.setItem(key, JSON.stringify(arraymail));
+              })
+              .catch((err) => alert(err));
+          });
+        });
+        boxsrandom.forEach(function (div) {
+          div.addEventListener("click", () => {
+            var txt = div.textContent;
+            if (txt.trim() == "") {
+            } else {
+              navigator.clipboard.writeText(txt);
+              alert(`Renk Kodu Kopyalandı: ${txt} `);
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
